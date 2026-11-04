@@ -1,6 +1,6 @@
 # Diffuse AI Control on Fuzzy Tasks
 
-Here you will find the code for the paper *Diffuse AI Control on Fuzzy Tasks*.
+Here you will find the code for the paper *Diffuse AI Control on Fuzzy Tasks* ([arXiv](https://arxiv.org/abs/2606.08892), [blog post](https://alignment.anthropic.com/2026/diffuse-ai-control/)).
 
 We do not provide the dataset of the processed papers, because it is derived from
 CC-licensed conference papers that we cannot redistribute. You can, however, rebuild the dataset or a part of it yourself using the code in `paper_pipeline/`. For the same reason, we could not provide the logs of our runs. If you want to reproduce the results, you will need to run both dataset construction and the scripts for the individual experiments.

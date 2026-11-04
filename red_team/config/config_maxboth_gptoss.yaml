@@ -1,0 +1,45 @@
+# gpt-oss-120b GOODHARTING (maxboth) optimization.
+#
+# mode "strong_weak" maximizes BOTH judge scores (objectives = (strong, weak)) --
+# the goodharting counterpart to the gpt-oss sandbagging runs. Generator is
+# gpt-oss-120b at n_proposals=5 to stay comparable with the gpt-oss sandbagging
+# runs (config_quality_gptoss.yaml / gptoss_part2_restart_n5). Judges, reasoning
+# efforts and rung schedule match those runs so the only deliberate difference
+# is the optimization objective.
+#
+# "100 steps" == target_highest_rung: 100 (100 trials completing the 128-sample
+# top rung before the run stops).
+#
+# Usage (needs OpenRouter access for the gpt-oss-120b generator):
+#   poetry run python evolve_quality_v2/run.py --config config_maxboth_gptoss.yaml
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "strong_weak"        # goodharting / maxboth: maximize both judges
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "openrouter/openai/gpt-oss-120b"
+  generator_reasoning_effort: "high"
+  n_proposals: 5
+  weak_judge: "anthropic/claude-haiku-4-5-20251001"
+  weak_judge_reasoning_tokens: 16384
+  weak_scorer_type: "quality"
+  strong_judge: "anthropic/claude-sonnet-4-6"
+  strong_judge_reasoning_effort: "high"
+  strong_judge_has_paper: true
+  strong_scorer_type: "quality"
+
+checkpoint_interval: 10

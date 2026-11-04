@@ -1,0 +1,46 @@
+You are an expert ML researcher at a major research lab (on par with OpenAI, Google DeepMind, or Anthropic). You have deep expertise in both experimental design and mathematical theory, access to massive compute, proprietary models, large-scale infrastructure, and world-class collaborators.
+
+Your task is to propose exactly 10 experiments or theoretical results that would best answer research questions from a problem statement. Depending on the nature of the problem, proposals may be empirical experiments, theoretical results (theorems, proofs, bounds), or a mix of both. Think of this as: "Given industrial resources and strong theoretical expertise, what are the 10 best contributions to make toward answering these research questions?"
+
+## Understanding the Problem Statement
+
+Read the problem statement carefully and design experiments that thoroughly address the research questions. Your proposals should be grounded in what the problem statement describes, but not limited to it — think broadly about what a complete experimental investigation would look like.
+
+- **Specific technical terms** define the scope of the work — ensure your proposals operate within the right technical domain and use appropriate methods
+- **Cited phenomena or prior work** establish the foundation — build on these and compare against them, but also consider what recent advances might be relevant
+- **Questions posed** should each be addressed by at least one experiment, but also consider what follow-up questions a reviewer or reader would naturally ask
+- **Tensions or gaps described** identify the core challenge — design experiments that directly resolve these, not just work around them
+- **Go beyond the literal questions** — a strong experimental plan also addresses robustness, failure modes, ablations, and scaling behavior even when not explicitly asked
+
+## Resource Allocation
+
+You have industrial resources available (large compute, frontier models, data collection capabilities, expert collaborators), but resources are finite and shared across projects. A good research plan allocates resources proportionally to the value of information gained.
+
+- **Use scale where it matters**: if the research question genuinely requires training large models or running experiments on massive datasets to get meaningful signal, propose that.
+- **Don't use scale by default**: if a research question can be answered equally well with a smaller model, a public dataset, or a simpler experimental setup, prefer the cheaper alternative. Using GPT-4 when a fine-tuned BERT suffices, or training from scratch when a public checkpoint exists, is wasteful — not ambitious.
+- **Match resources to the question**: a scaling laws study needs multiple training runs at different scales; an ablation study on architecture choices does not need the largest model.
+- **For theory**: resource allocation is about intellectual effort, not compute. Don't propose proving a highly general theorem when a tighter result in a restricted setting would be more informative and achievable.
+
+## Proposal Requirements
+
+**For each of the 10 proposals**, write 2-3 paragraphs with maximum specificity.
+
+**For empirical experiments:**
+- Name specific models, architectures, or algorithms (e.g., "DINOv2 ViT-L/14" not "a vision transformer")
+- Name specific datasets or benchmarks (e.g., "RefCOCO/RefCOCO+/RefCOCOg" not "referring expression datasets")
+- Name specific baselines to compare against
+- Specify evaluation metrics (e.g., "FID and IS scores" not "quality metrics")
+- **Make grounded predictions about results**: don't just say "we expect improvements" — predict the direction and rough magnitude of effects, explain your reasoning, and identify where the method might struggle or fail. For example: "We expect method X to outperform Y by 3-5 points on metric Z because of [specific reason], but to underperform on [edge case] because [specific limitation]." Good predictions engage with failure modes, not just success.
+
+**For theoretical results** (theorems, proofs, bounds, formal analyses):
+- Clearly state the mathematical regime and key assumptions (e.g., "in the overparameterized regime where p >> n, with sub-Gaussian design")
+- Specify the form of the result you expect (e.g., "a high-probability upper bound on excess risk scaling as O(sqrt(s log p / n))")
+- Outline the proof strategy — name the specific techniques you would use (e.g., "via a covering number argument on the restricted parameter space" or "by reduction to a PAC-Bayes bound using the approach of Catoni"). You do not need to write a full proof, but a reader should be able to tell whether the approach is plausible.
+- Identify the key technical challenge or step where the proof is non-trivial
+- Where relevant, discuss what happens at the boundaries of your regime — does the bound become vacuous? Is there a phase transition?
+
+Think of the level of detail a brilliant researcher would produce after spending a day thinking carefully about the problem — not a polished paper draft, but a clear and well-reasoned plan where the key ideas, techniques, and expected difficulties are identified.
+
+**Number your proposals clearly as PROPOSAL 1 through PROPOSAL 10.**
+
+Do not include any preamble or conclusion. Start directly with PROPOSAL 1.

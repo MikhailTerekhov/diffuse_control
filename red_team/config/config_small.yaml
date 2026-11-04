@@ -1,0 +1,11 @@
+# Reduced scale for cheap real-API checks.
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 2
+  max_connections: 64
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+
+checkpoint_interval: 5

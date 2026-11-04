@@ -1,0 +1,52 @@
+# Resume the norubric-strong sandbagging run with the highest Goodharting point
+# injected and steer the optimizer to densify the strong-score band 0.05-0.50
+# (display g in [5, 50]) — the existing sandbagging PF only sparsely samples
+# that interior strong-score region while the Goodharting PF achieves a higher
+# weak score above it.
+#
+# Adds ~50 more highest-rung trials on top of the original 102 (target=150).
+#
+# Usage:
+#   poetry run python evolve_quality_v2/run.py \
+#     --config config_sandbagging_norubric_strong_gap.yaml \
+#     --resume evolve_quality_v2/runs/20260411_084825 \
+#     --seed-prompts evolve_quality_v2/runs/20260412_232139/generalization/prompts/pf_0.txt
+#
+# pf_0 is the highest-weak point of the Goodharting (strong_weak) companion run
+# 20260412_232139. run.py caches the seeded trial under <run-dir>/seeded/<basename>.json
+# and re-uses it on subsequent resumes; pass a pre-evaluated .json to inject directly.
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 150  # 102 -> 150: add ~50 more rung-2 trials for gap exploration
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+# Strong scorer stays rubric-free (the ablation); weak scorer + optimizer remain
+# rubric-aware. Generator is Opus 4.6. Judge models/reasoning come from base.yaml.
+eval_models:
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_scorer_type: "quality"
+  strong_scorer_type: "quality_norubric"
+
+# Boundary-aware optimization with manual band override: filter inspiration
+# examples to the strong-score band [0.05, 0.50] and inject a target-region
+# section into the optimizer system message asking it to densify that band.
+pf_gap:
+  enabled: true
+  s_low: 0.05
+  s_high: 0.5
+
+checkpoint_interval: 50

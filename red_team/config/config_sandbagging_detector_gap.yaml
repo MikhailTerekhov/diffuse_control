@@ -1,0 +1,43 @@
+# Resume the sandbagging-detector run with a seeded V1 max_weak prompt and
+# steer the optimizer to fill the strong-score gap between the existing PF's
+# top-right corner and the seeded point.
+#
+# Usage (raw prompt — run.py will evaluate it before the main loop, with
+# progress shown in the monitor's seeding banner):
+#   poetry run python evolve_quality_v2/run.py \
+#     --config config_sandbagging_detector_gap.yaml \
+#     --resume evolve_quality_v2/runs/20260410_014816 \
+#     --seed-prompts evolve_quality/runs/20260424_043916/checkpoints/checkpoint_240/best_program.txt
+#
+# After the first run, run.py caches the resulting trial under
+#   <run-dir>/seeded/<basename>.json
+# and re-uses it on subsequent resumes. To inject a pre-evaluated JSON
+# directly, pass that .json path instead of the .txt prompt.
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 150  # bumped from 100 to give room for gap exploration
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging_detector"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  weak_scorer_type: "detector"
+
+# Boundary-aware optimization: filter inspiration examples to the strong-score
+# band between the two boundary points and inject a target-region section into
+# the optimizer system message.
+pf_gap:
+  enabled: true
+
+checkpoint_interval: 50

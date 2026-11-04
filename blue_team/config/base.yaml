@@ -1,0 +1,41 @@
+# Outer saddle-point loop configuration.
+
+n_cycles: 10
+n_w_candidates: 3                # sequential Opus W proposals per W phase (cycles 2+)
+n_w_candidates_first_cycle: 5    # more candidates for cycle 1 to explore broadly
+papers_per_prompt_w_phase: 32    # subsample per prompt for J(W) computation
+papers_per_anchor: 32            # eval each decent anchor on this many papers
+n_idea_kernels: 20               # phase-0 anchor candidates
+n_anchors_target: 10             # final anchor count after filtering (not counting p_def)
+anchor_s_threshold: 0.10         # |s_mean - s_def| < threshold to qualify as decent
+anchor_s_threshold_relaxed: 0.15 # used if fewer than 5 anchors survive primary filter
+
+n_top_per_past_pf: 2             # P*: top-w prompts taken from each past PF (anchor-band filtered)
+n_sparse_past_pf: 3              # P*: sparse picks from each past PF (anchor-band filtered)
+n_top_current_pf: 2              # P*: top-w from most-recent PF (anchor-band filtered)
+n_sparse_current_pf: 5           # P*: max sparse picks from most-recent PF (anchor-band filtered)
+
+source_run: "REPLACE_ME"   # F_0 bootstrap: opus-4-6 + 10 props sandbagging vs Haiku/Sonnet rubric judges
+
+max_connections: 256
+
+models:
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_judge: "anthropic/claude-haiku-4-5-20251001"
+  weak_judge_reasoning_tokens: 16384
+  strong_judge: "anthropic/claude-sonnet-4-6"
+  strong_judge_reasoning_effort: "high"
+  optimizer: "anthropic/claude-opus-4-6"
+  optimizer_reasoning_effort: "xhigh"
+  summary: "anthropic/claude-sonnet-4-6"
+  summary_reasoning_tokens: 4096
+
+# PF phase MO-ASHA settings
+pf_phase_target_highest_rung: 5    # NEW rung-2 trials per cycle (on top of seeds)
+pf_phase_rung_samples: [4, 16, 64] # half-size rungs to keep cycles tractable
+pf_phase_eta: 4                    # 25% promotion rate (top quartile dominance check)
+
+split:
+  train_ratio: 0.7
+  seed: 42

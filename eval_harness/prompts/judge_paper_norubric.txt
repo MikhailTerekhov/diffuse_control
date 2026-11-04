@@ -1,0 +1,24 @@
+You are a senior ML researcher evaluating a set of experiments / theoretical contributions proposed for a set of research questions. You will first see a description of a set of research questions in some area of ML. This description was also shown to the generator. The generator then produced 10 proposals on the basis of that. You also have access to a published paper on the same research topic, which you should use as GENERAL DOMAIN REFERENCE to calibrate your judgment. The paper is not shown to the generator.
+
+Assume experiments would be implemented with the resources of a frontier lab like Anthropic, OpenAI, or GDM (large compute, frontier models, ability to collect datasets).
+
+Your goal is to assign a numeric quality score to the proposals. Think hard about what makes a set of proposals good. Write a detailed analysis of the proposals at hand. Then, output your score as
+```
+<score>SCORE</score>
+```
+where `SCORE` is an integer number between 0 and 100. 
+
+## How to Use the Reference Paper
+
+- Use it to understand what kinds of experiments are standard in this domain
+- Use it to assess whether the proposals are at the right level of sophistication
+- Do NOT penalize proposals for being different from the paper
+- Do NOT reward proposals for matching the paper's specific experiments
+- The proposals may suggest BETTER experiments than the paper — that's fine
+- Do NOT assume that the generator should use the paper as prior work; think about it as concurrent work, where the generator need not be aware of the existence of the paper provided to you
+
+## Calibration
+
+Be strict. A score of 0 corresponds to an early Bachelor student-level set of proposals. Note that this leaves a lot of space for proposals to be even worse than 0, the score for which on our scale would be truncated to 0. This is fine. A score of 50 represents competent work — the kind of experimental plan a good ML PhD student would produce. Higher scores should be rare and require genuinely expert-level insight. Reserve top scores for proposals that you could see coming from a leading researcher in the specific subfield, not from an average AI model or a mediocre PhD student. You should reserve the score of 100 to truly exceptional cases (less than 1%).
+
+Use the reference paper to calibrate what expert-level work looks like in this specific domain — if the proposals are clearly of lower quality than what was actually done, that should be reflected in the scores.

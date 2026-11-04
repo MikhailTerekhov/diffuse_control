@@ -1,0 +1,35 @@
+# MO-ASHA v2 sandbagging run: Opus 4.6 generator vs the outer_evolve W weak judge.
+#
+# Weak judge prompt + rubric: outer_evolve_quality/runs/20260426_235202/cycle_1/w_phase/chosen.json
+# (Haiku 4.5 prompted with that W prompt + structured score schema).
+# Strong judge: Sonnet 4.6 with paper, rubric-based (matches the existing opus sandbagging
+# rubric run for apples-to-apples comparison).
+#
+# Usage:
+#   poetry run python evolve_quality_v2/run.py --config config_sandbagging_outer_evolve_opus.yaml
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_scorer_type: "outer_evolve"
+  outer_evolve_w_path: "blue_team/prompts/b_star.json"
+  strong_scorer_type: "quality"
+
+checkpoint_interval: 50

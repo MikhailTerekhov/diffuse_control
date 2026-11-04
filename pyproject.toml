@@ -1,0 +1,46 @@
+[project]
+name = "sandbagging-fuzzy"
+version = "0.1.0"
+description = "Diffuse AI control on fuzzy tasks: experiment-planning subversion benchmark"
+readme = "README.md"
+requires-python = ">=3.12"
+
+# Red team / blue team / RL deps get added as those components land.
+dependencies = [
+    # corpus pipeline
+    "anthropic>=0.105",
+    "openai>=2.41",
+    "claude-agent-sdk>=0.1.46,<0.2",
+    "openreview-py>=1.59,<2",
+    "arxiv>=2.4,<3",
+    "pymupdf>=1.27,<2",
+    "httpx>=0.28,<0.29",
+    "tqdm>=4.67,<5",
+    # eval harness
+    "inspect-ai>=0.3.235",
+    "google-genai>=2.8",  # Gemini generators in the variance decomposition
+    # red team prompt optimization
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    # max-weak baseline: OpenEvolve driven by a hydra wrapper
+    "openevolve==0.3.2",
+    "hydra-core>=1.3",
+    # RL red team (Appendix J): fine-tuning via the Tinker API
+    "tinker>=0.22",
+    "tinker-cookbook>=0.4",
+    "chz>=0.1",
+    "wandb>=0.27",
+    # figures
+    "numpy>=2.2",
+    "matplotlib>=3.10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["paper_pipeline", "eval_harness", "red_team", "max_weak", "blue_team", "rl_red_team"]

@@ -1,0 +1,26 @@
+# w* against the blue team's robustified weak scorer b*.
+# Uses the shipped b* (blue_team/prompts/b_star.json). Point both paths at a
+# cycle_<n>/w_phase/chosen.json instead to attack a scorer you discovered yourself.
+defaults:
+  - base
+  - _self_
+
+max_iterations: 1000
+
+scoring:
+  mode: "max_weak"
+
+database:
+  feature_dimensions: ["diversity", "complexity"]
+  feature_bins: 4
+
+eval_models:
+  max_connections: 32
+  max_connections_initial: 128
+  skip_strong_judge: true
+  max_stage2_evals: 100
+  weak_scorer_type: "outer_evolve"
+  outer_evolve_w_path: "blue_team/prompts/b_star.json"
+
+prompt:
+  system_message: "${optimizer_prompt:max_weak_nostrong_outer_evolve,blue_team/prompts/b_star.json}"

@@ -1,0 +1,24 @@
+# Goodharting Pareto frontier: maximize both scores. Bounds the right side
+# of the admissible region.
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "strong_weak"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  weak_scorer_type: "quality"
+  strong_scorer_type: "quality"
+
+checkpoint_interval: 10

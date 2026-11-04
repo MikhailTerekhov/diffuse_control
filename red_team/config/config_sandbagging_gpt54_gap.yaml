@@ -1,0 +1,50 @@
+# Resume the gpt-5.4 sandbagging run with a seeded V1 max_weak prompt and
+# steer the optimizer to densify the strong-score band 0.2-0.8 — the existing
+# PF only sparsely samples that interior strong-score region while the
+# separately-trained max_weak prompt achieves a higher weak score above it.
+#
+# Adds 50 more highest-rung trials on top of the original 50 (target=100).
+#
+# Usage:
+#   poetry run python evolve_quality_v2/run.py \
+#     --config config_sandbagging_gpt54_gap.yaml \
+#     --resume evolve_quality_v2/runs/20260418_223910 \
+#     --seed-prompts evolve_quality/runs/20260425_054650/checkpoints/checkpoint_230/best_program.txt
+#
+# After the first run, run.py caches the resulting trial under
+#   <run-dir>/seeded/<basename>.json
+# and re-uses it on subsequent resumes. To inject a pre-evaluated JSON
+# directly, pass that .json path instead of the .txt prompt.
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100  # 50 → 100: add 50 more rung-2 trials for gap exploration
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "openai/gpt-5.4"
+  generator_reasoning_effort: "high"
+  weak_scorer_type: "quality"
+  strong_scorer_type: "quality"
+
+# Boundary-aware optimization with manual band override: filter inspiration
+# examples to the strong-score band [0.2, 0.8] and inject a target-region
+# section into the optimizer system message asking it to densify that band.
+pf_gap:
+  enabled: true
+  s_low: 0.2
+  s_high: 0.8
+
+checkpoint_interval: 50

@@ -1,0 +1,39 @@
+# MO-ASHA v2 sandbagging run: Opus 4.6 generator vs the cyc10 outer_evolve W weak judge.
+# Seeded with the V1 max_weak best prompt (evolve_quality/runs/20260430_231848 cyc10 cascade).
+#
+# Both the default prompt (auto-registered at rung 0) and the V1 max_weak best prompt
+# (pre-evaluated and injected at rung 2 via the seed flow) are present from the start.
+# pf_gap is OFF — the optimizer should not be told to target any specific strong-score
+# region; the max_weak seed is just a regular PF inspiration.
+#
+# Usage:
+#   poetry run python evolve_quality_v2/run.py --config config_sandbagging_outer_evolve_cyc10_seed_maxweak.yaml
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_scorer_type: "outer_evolve"
+  outer_evolve_w_path: "blue_team/prompts/b_star.json"
+  strong_scorer_type: "quality"
+
+seed_prompts:
+  - "evolve_quality/runs/20260430_231848/checkpoints/checkpoint_90/best_program.txt"
+
+checkpoint_interval: 50

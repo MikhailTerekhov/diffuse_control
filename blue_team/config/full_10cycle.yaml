@@ -1,0 +1,43 @@
+# Full 10-cycle saddle-point loop.
+# Each cycle: 10 W candidates -> 10 NEW rung-2 PF trials.
+
+n_cycles: 10
+n_w_candidates: 5               # 5 sequential Opus W proposals per W phase
+n_w_candidates_first_cycle: 5
+papers_per_prompt_w_phase: 32
+papers_per_anchor: 32
+n_idea_kernels: 20
+n_anchors_target: 10
+anchor_s_threshold: 0.10
+anchor_s_threshold_relaxed: 0.15
+
+n_top_per_past_pf: 2
+n_sparse_past_pf: 3
+n_top_current_pf: 2
+n_sparse_current_pf: 5
+
+source_run: "REPLACE_ME"
+anchors_from: null   # reuse the cycle-1 decent prompts
+
+max_connections: 256
+
+models:
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_judge: "anthropic/claude-haiku-4-5-20251001"
+  weak_judge_reasoning_tokens: 16384
+  strong_judge: "anthropic/claude-sonnet-4-6"
+  strong_judge_reasoning_effort: "high"
+  optimizer: "anthropic/claude-opus-4-6"
+  optimizer_reasoning_effort: "xhigh"
+  summary: "anthropic/claude-sonnet-4-6"
+  summary_reasoning_tokens: 4096
+
+# PF phase MO-ASHA settings
+pf_phase_target_highest_rung: 15   # 15 NEW rung-2 trials per cycle (on top of seeds)
+pf_phase_rung_samples: [4, 16, 64]
+pf_phase_eta: 4                    # 25% promotion rate
+
+split:
+  train_ratio: 0.7
+  seed: 42

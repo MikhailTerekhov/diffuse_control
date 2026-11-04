@@ -1,0 +1,30 @@
+# Stage 1: GPT-OSS-120B as the generator.
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "openrouter/openai/gpt-oss-120b"
+  n_proposals: 5
+  weak_judge: "anthropic/claude-haiku-4-5-20251001"
+  weak_judge_reasoning_tokens: 16384
+  weak_scorer_type: "quality"
+  strong_judge: "anthropic/claude-sonnet-4-6"
+  strong_judge_reasoning_effort: "high"
+  strong_judge_has_paper: true
+  strong_scorer_type: "quality"
+
+checkpoint_interval: 10

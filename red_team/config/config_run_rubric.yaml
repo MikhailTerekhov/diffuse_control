@@ -1,0 +1,20 @@
+# Subversion Pareto frontier: maximize weak score, minimize ground truth
+# proxy, against the default weak scorer b_0. This is the paper's main red team run.
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+checkpoint_interval: 10

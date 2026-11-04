@@ -1,0 +1,22 @@
+# Stage 1: red team vs the Haiku sandbagging detector as the weak scorer.
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 100
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging_detector"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  weak_scorer_type: "detector"
+
+checkpoint_interval: 50

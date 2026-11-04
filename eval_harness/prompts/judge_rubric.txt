@@ -1,0 +1,98 @@
+## Scoring Rubric
+
+Note: "theoretical proposals" below refers to proposals for theorems, proofs, bounds, or formal analyses (as opposed to empirical experiments). Apply the theoretical criteria whenever the paper is classified as theory-focused or when individual proposals are theoretical.
+
+### SPECIFICITY (0-5)
+How concrete and detailed are the proposals? Naming popular models/datasets is easy — specificity means choosing the RIGHT ones for THIS problem and explaining WHY.
+- **0**: Proposals name only broad categories ("a transformer", "standard benchmarks"). For theory: proposals state only vague goals ("prove a convergence bound") with no mathematical setup.
+- **1**: Proposals name well-known models and datasets, but choices feel generic — they could apply to many different problem statements (e.g., always defaulting to MMLU, ImageNet, GPT-4). For theory: proposals name the general type of result (e.g., "sample complexity bound") but specify no assumptions, regime, or proof technique.
+- **2**: Most proposals name specific models/datasets that are reasonable for the domain, but without justifying why these specific choices suit this particular research question. For theory: proposals state assumptions and the type of bound but without specifying the mathematical regime, relevant parameters, or how the proof would proceed.
+- **3**: Proposals name domain-appropriate models, datasets, AND metrics, with some evidence the choices are tailored to the specific problem rather than pulled from a standard toolkit. For theory: proposals specify the regime (e.g., "high-dimensional, p >> n"), key assumptions (e.g., "sub-Gaussian noise"), and the form of the result, but proof sketches remain shallow.
+- **4**: Proposals demonstrate clearly tailored choices — specific model variants, dataset splits, and evaluation protocols that reflect genuine understanding of what matters for THIS problem. Some proposals reference recent or niche work relevant to the specific subfield. For theory: proposals include concrete proof sketches naming specific techniques (e.g., "via Rademacher complexity" or "reduction to a covering number argument"), with clearly stated assumptions and tight characterization of the claimed result.
+- **5**: Exceptional specificity — proposals reference cutting-edge or specialized resources specific to the subfield, justify non-obvious choices, and specify experimental details (e.g., training schedules, hyperparameter ranges, data preprocessing) that show deep expertise. For theory: proposals provide detailed proof outlines with intermediate lemmas, identify the key technical barriers, reference specific prior results to build on, and specify the exact form of bounds including dependence on all relevant parameters.
+
+### COHERENCE (0-5)
+Do the proposals form a logical experimental plan that addresses the research questions? Most proposals will address the questions — coherence means they form an integrated PLAN, not just a list.
+- **0**: Proposals read as a disconnected list of experiments with no logical thread. For theory: theorems are unrelated to each other and don't build toward a unified result.
+- **1**: Proposals individually relate to the research questions but don't build on each other — they could be reordered arbitrarily with no loss. For theory: each theorem addresses the topic but they don't form a logical progression — later results don't depend on or extend earlier ones.
+- **2**: Some logical grouping is visible (e.g., main experiments, then ablations), but the proposals don't tell a story — results from one experiment don't inform the next. For theory: there is some structure (e.g., upper bounds then lower bounds), but the relationship between results is not made explicit.
+- **3**: Proposals form a recognizable experimental plan with clear structure: there is a core method, it is evaluated, and ablations follow. But the plan is somewhat formulaic — it follows a predictable template rather than being shaped by the specific research questions. For theory: results follow a standard arc (main theorem, corollaries, special cases) but the progression feels mechanical rather than driven by the specific problem's structure.
+- **4**: Proposals form a well-integrated plan where later experiments are clearly motivated by earlier ones. The structure reflects genuine strategic thinking about what evidence would be most convincing for THIS set of research questions. For theory: results build on each other — e.g., a general theorem followed by tighter bounds in specific regimes, with each result motivated by limitations of the previous one.
+- **5**: Proposals form a compelling research narrative — each experiment addresses a specific gap or skepticism that the prior experiments leave open. The plan shows the kind of strategic thinking about what reviewers would demand and what would constitute a watertight argument. For theory: the sequence of results forms a complete picture — upper and lower bounds that nearly match, characterizations across regimes, and results that anticipate and address the natural "what about...?" questions a reviewer would ask.
+
+### COVERAGE (0-5)
+Do the proposals address diverse aspects of the research questions? Listing many experiments is easy — coverage means addressing the HARD sub-questions, not just the obvious ones.
+- **0**: Proposals repeatedly address the same aspect of the research questions. For theory: all proposals target the same type of result in the same regime.
+- **1**: Proposals address the most obvious interpretation of the research questions but miss important sub-questions or dimensions mentioned in the problem statement. For theory: proposals cover only upper bounds or only one regime, ignoring lower bounds, alternative settings, or computational complexity considerations mentioned in the problem.
+- **2**: Major research questions are addressed, but secondary questions or important edge cases mentioned in the problem statement are ignored. For theory: main results are proposed but important regimes, limiting cases, or connections to related problems mentioned in the statement are not addressed.
+- **3**: All explicitly stated research questions are addressed, but the proposals don't go beyond what is literally asked — they miss implicit questions or natural follow-ups that a reviewer would expect. For theory: upper and lower bounds are both addressed, but proposals miss natural extensions like minimax optimality, computational-statistical gaps, or behavior in boundary regimes.
+- **4**: Proposals address both stated and implicit research questions, including failure modes, limitations, and comparisons that weren't explicitly asked for but would strengthen the work. For theory: proposals cover multiple regimes, include matching lower bounds, address computational hardness where relevant, and connect to related open problems.
+- **5**: Exceptional coverage — proposals anticipate questions that even domain experts might not think of immediately, addressing subtle aspects like distributional robustness, generalization boundaries, or surprising interactions between components. For theory: proposals address phase transitions, sharp thresholds, connections to seemingly unrelated areas, and identify the exact boundary conditions where results change character.
+
+### FEASIBILITY (0-4)
+Are the proposed experiments well-scoped, practically implementable, and efficiently resourced? Given industrial resources, most experiments are technically possible — feasibility here means the experiments are well-designed enough to yield useful results AND that resources are allocated proportionally to the information gained. Using a 70B model when a 7B model suffices, or training from scratch when fine-tuning a checkpoint would answer the same question, is a feasibility problem — it wastes resources without improving the experimental outcome.
+- **0**: Proposals are underspecified to the point that they couldn't be implemented without substantial additional design work. For theory: claimed results are stated without any indication of whether they are provable or what techniques would apply.
+- **1**: Proposals could be implemented but several have unclear success criteria, would likely produce uninterpretable results, or grossly misallocate resources (e.g., proposing to train a frontier-scale model for a question answerable with existing benchmarks). For theory: some proposed theorems are likely unprovable with current techniques, or the claimed bounds are implausibly tight given the generality of the assumptions.
+- **2**: Most proposals are implementable and would produce interpretable results, but some are poorly scoped (too broad to be conclusive, or too narrow to be interesting) or use unnecessarily expensive setups when cheaper alternatives exist. For theory: most results seem provable but some are either trivial given existing work or would require major breakthroughs not acknowledged in the proposal.
+- **3**: All proposals are well-scoped with clear success criteria. Experiments would produce clean, interpretable results. Resource choices are reasonable — no obvious waste. For theory: all proposed results are plausibly provable with identified techniques, and the scope of each theorem is well-calibrated — neither trivially following from prior work nor requiring unrealistic technical leaps.
+- **4**: Proposals show sophisticated scoping — experiments are sized to be maximally informative with minimal wasted effort. Resource allocation is deliberate: expensive experiments are justified by the question's requirements, and cheaper alternatives are preferred where they suffice. Potential confounds are anticipated and controlled for. For theory: proposals demonstrate awareness of what is technically tractable, identify the key proof challenges, and scope results to be both achievable and maximally informative.
+
+### NOVELTY (0-4)
+Do proposals go beyond the obvious first-pass experimental plan? Any competent researcher can propose "train model X on dataset Y and evaluate" — novelty means proposing experiments that reveal something surprising or non-obvious.
+- **0**: All proposals follow the most predictable experimental template for this type of problem (train, eval on standard benchmarks, ablate components, scale up). For theory: proposals restate known results with trivial modifications to the setting.
+- **1**: Proposals follow a standard template but include one or two experiments with a slightly unusual angle (e.g., an unexpected baseline, an unusual evaluation dimension). For theory: mostly standard results for this type of problem, with one slightly novel formulation or an extension to a mildly different regime.
+- **2**: A few proposals show genuine creative thinking — perhaps an experiment that would reveal a surprising property, or an unusual evaluation that provides unique insight. For theory: a few proposals suggest non-obvious connections, novel proof strategies, or results that would challenge existing intuitions about the problem.
+- **3**: Several proposals demonstrate non-obvious experimental design. The plan includes experiments that a domain expert would find interesting or unexpected — not just confirmation of the obvious. For theory: several proposals identify surprising structural properties, propose results that would overturn conventional wisdom, or connect the problem to unexpected mathematical tools.
+- **4**: Multiple proposals show the kind of experimental creativity that distinguishes top-venue papers — experiments designed to reveal surprising phenomena, clever controls that distinguish between competing hypotheses, or evaluations that challenge conventional wisdom in the field. For theory: proposals demonstrate deep mathematical insight — novel proof frameworks, unexpected reductions, results that unify previously disconnected lines of work, or impossibility results that reshape understanding of the problem's difficulty.
+
+### RIGOR (0-4)
+Are the proposals methodologically sound? Mentioning baselines is easy — rigor means choosing the RIGHT baselines and anticipating confounds.
+- **0**: Proposals lack baselines, controls, or clear evaluation methodology. For theory: proposals state results with no indication of proof approach or correctness argument.
+- **1**: Proposals mention baselines and metrics but the choices are superficial — baselines are either too weak (straw men) or too generic, and potential confounds are not addressed. For theory: proof sketches are hand-wavy, assumptions may be inconsistent, or the claimed results don't clearly follow from the stated approach.
+- **2**: Proposals include reasonable baselines and metrics, but the experimental design has gaps — e.g., missing ablations that would be needed to support the conclusions, or comparisons that don't isolate the claimed contribution. For theory: proof outlines are plausible but incomplete — key steps are asserted without justification, or the relationship between assumptions and conclusions has gaps.
+- **3**: Proposals demonstrate solid methodology — appropriate baselines that test the right hypotheses, metrics that capture what matters, and experimental designs that would support the claimed conclusions. Some attention to potential confounds. For theory: proof sketches are convincing with clearly identified key lemmas, assumptions are well-justified and necessary, and the logical structure from assumptions to conclusions is sound.
+- **4**: Proposals demonstrate exceptional rigor — baselines are carefully chosen to isolate specific claims, experiments include controls for subtle confounds, statistical methodology is appropriate, and the overall plan would produce results robust to reviewer scrutiny. For theory: proofs are outlined with sufficient detail to be convincing, assumptions are shown to be tight (with counterexamples or lower bounds for relaxed assumptions), and potential failure modes of the proof strategy are acknowledged and addressed.
+
+### BALANCE (0-3)
+Do the 10 proposals have a good mix of core contributions, supporting analyses, and ablation/validation experiments? Most LLMs will produce some mix — the question is whether the proportions are well-chosen for THIS problem.
+- **0**: The mix is clearly wrong for the problem — e.g., 7+ ablations when the core method hasn't been properly evaluated, or all 10 proposals are minor variants of the same experiment with no distinct core contribution. For theory: all results are at the same level of generality with no variation between foundational results and special cases or applications.
+- **1**: The mix is imbalanced in a way that weakens the plan — e.g., too many core experiments with no ablations to validate design choices, or too many supporting analyses without enough main results to support. For theory: the plan is top-heavy (all main theorems, no supporting results) or bottom-heavy (many corollaries but insufficient main results).
+- **2**: Reasonable balance — core contributions, ablations, and supporting work are all present, but the proportions aren't quite right. Perhaps one more ablation would strengthen the argument, or a supporting experiment could be replaced with something more central. For theory: main theorems are complemented by some supporting results, but the plan could benefit from tighter special cases or more connections to applications.
+- **3**: Excellent balance — the proportions are well-tailored to the problem. Core experiments are adequately validated by ablations, supporting analyses fill genuine gaps, and nothing feels like filler or like a missing piece. For theory: a strong core theorem is supported by tight special cases, lower bounds or impossibility results, and connections to applications or related problems.
+
+### RESULT_REASONING (0-3)
+Do proposals include well-reasoned predictions about expected outcomes? Predicting "our method will work better" is trivial — good predictions explain WHY and WHEN, including potential failure modes.
+- **0**: No predictions, or only generic predictions ("the proposed method should outperform baselines"). For theory: no discussion of what the bounds should look like or why the proposed results would hold.
+- **1**: Proposals predict outcomes but predictions are uniformly optimistic and don't engage with potential failure modes or surprising outcomes. For theory: proposals assert bounds will be tight or results will be strong without explaining why, or without acknowledging regimes where the approach may fail.
+- **2**: Some proposals make nuanced predictions — they identify where the method might struggle, what the key bottlenecks are, or what results would be surprising. But this is inconsistent across proposals. For theory: some proposals explain the expected form of results and identify where bounds may be loose, but this analysis is uneven across the plan.
+- **3**: Most proposals include well-reasoned predictions that demonstrate genuine domain understanding: they predict specific magnitudes or trends, identify conditions where the method might fail, explain what would falsify the hypothesis, and show awareness of likely confounds and alternative explanations. For theory: proposals predict the specific form and scaling of bounds, explain which assumptions are load-bearing (i.e., relaxing them would change the result qualitatively), and identify phase transitions or critical thresholds where behavior changes.
+
+### REDUNDANCY_PENALTY (-2 to 0)
+Penalty for overlapping or redundant proposals. Two experiments that test the same hypothesis on different datasets count as redundant unless there is a clear reason for both.
+- **0**: All proposals address distinct questions or test distinct hypotheses. For theory: each theorem addresses a genuinely different aspect of the problem.
+- **-1**: 1-2 proposals substantially overlap with others (same hypothesis, similar setup, no clear justification for both). For theory: 1-2 proposed theorems are minor variants of each other (e.g., same result under slightly different but essentially equivalent assumptions).
+- **-2**: 3+ proposals are redundant — the same core idea is tested repeatedly with only superficial variation. For theory: 3+ proposals restate essentially the same result with cosmetic differences in assumptions or notation.
+
+### IRRELEVANCE_PENALTY (-2 to 0)
+Penalty for proposals unrelated to the research questions.
+- **0**: All proposals are relevant to the research questions. For theory: all theorems address problems raised in the statement.
+- **-1**: 1-2 proposals are clearly off-topic or address questions not raised by the problem statement. For theory: 1-2 proposed results address tangential mathematical questions unrelated to the core problem.
+- **-2**: 3+ proposals are clearly off-topic or nonsensical. For theory: 3+ proposed results have no clear connection to the research questions.
+
+---
+
+## Output Format
+
+First, write your detailed analysis. Then end with EXACTLY this structured format:
+
+SPECIFICITY: <score>
+COHERENCE: <score>
+COVERAGE: <score>
+FEASIBILITY: <score>
+NOVELTY: <score>
+RIGOR: <score>
+BALANCE: <score>
+RESULT_REASONING: <score>
+REDUNDANCY_PENALTY: <score>
+IRRELEVANCE_PENALTY: <score>
+JUSTIFICATION: <Two to three paragraphs. First, assess the overall experimental plan — does it address the research questions well? Second, discuss the strongest and weakest proposals. Third, note any particularly insightful or problematic proposals.>

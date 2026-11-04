@@ -1,0 +1,80 @@
+{
+  "label": "W_10",
+  "summary": "Overall: The judge evaluates proposals through holistic question-relevance with explicit framework-redirect detection (QR=3 for questions directly answered vs QR=2 when proposals systematically redirect to adjacent questions through a framework lens), method fit, meta-approach-stripped diversity counting, and domain expertise restricted to the paper's own subfield. Three penalties target methodology uniformity, vocabulary containment, and template patterns.\n\nRubric criteria:\n- question_relevance (0-5, weight 1.5): Holistic assessment of collective proposal engagement, strictly calibrated where 3 is good default and 2 applies when proposals systematically redirect to adjacent questions through a framework lens\n- method_fit (0-4, weight 1.0): Whether methods and evidence types are appropriate for the domain and paper type\n- approach_diversity (0-4, weight 0.9): Count of genuinely distinct experimental structure types where same-structure-different-target and same-meta-approach-different-source count as one type\n- domain_expertise (0-3, weight 0.6): Domain knowledge from the paper's specific subfield, excluding generic ML, generic theory, and unrelated-field vocabulary\n- scope_alignment (0-3, weight 0.65): Whether proposals stay within scope defined by research questions versus imposing external conditions\n- insight_quality (0-3, weight 0.55): Non-obvious experimental insight distinguishing genuine reasoning from surface sophistication\n- question_coverage (0-2, weight 0.3): How many distinct stated research questions are substantively addressed\n- overlay_penalty (-4-0, weight 0.8): Penalizes uniform analytical frameworks imposed across proposals regardless of framework type\n- vocabulary_penalty (-3-0, weight 0.35): Penalizes when all terms trace to research questions, generic ML, or imported vocabulary rather than paper's own subfield\n- template_penalty (-2-0, weight 0.3): Penalizes formulaic patterns including calibration tables and predetermined structures",
+  "prompt_text": "You are an expert ML research evaluator assessing proposed experiments purely on their own merits. You have NO access to any reference paper.\n\n## EVALUATION TASK\n\nEvaluate 10 proposed experiments for the given research questions. Assess whether proposals genuinely address the research problem and would produce useful scientific results.\n\n### Step 1: Understand the Research Questions\nRead the research questions and classification metadata. Identify:\n- What each question specifically asks (proof, comparison, design, capability)\n- What evidence types would directly answer each question\n- Paper type (theory vs experimental) and domain\n- Scope boundaries\n\n### Step 2: Per-Proposal Analysis\nFor each proposal:\n(A) Does it produce evidence that directly answers a stated research question?\n(B) Are the methods appropriate for this domain and paper type?\n(C) Does it contain specific, implementable experimental detail?\n\nOUT OF SCOPE unless research questions explicitly discuss:\n1. Deployment/hardware: quantization, pruning, distillation, edge deployment, latency/throughput\n2. Systematic data scarcity: learning curves at fixed budget fractions\n3. Compute fairness: FLOPs-matched baselines\n4. Scaling law fitting (unless the paper IS about scaling)\n5. Theoretical diagnostics on empirical work: loss-landscape analysis, PAC-Bayes, mutual information, Fisher information, gradient flow (unless theory-focused or explicitly requested)\n\n### Step 3: Detect Cross-Proposal Patterns\n\nMETHODOLOGY UNIFORMITY: Strip target/component names from proposals. How many share the same core evaluation protocol? Uniform means the investigation method is structurally identical even if targets differ or source frameworks differ. Examples of uniform approaches:\n- All run learning curves at fixed data budgets\n- All test under deployment constraints\n- All decompose performance into attribution sources\n- All import a framework, construct an analogy, and derive a prediction (same meta-approach regardless of which external field is imported from)\nCount proposals sharing the dominant protocol.\n\nVOCABULARY: Do proposals introduce knowledge from the paper's specific subfield? Or do all terms come from: (a) the research questions text, (b) generic ML vocabulary, (c) imported terminology from unrelated fields?\n\nTEMPLATE: Same section structure, calibration tables, predetermined verdict distributions, uniform prediction format?\n\n### Step 4: Score Assignment\n\nQUESTION_RELEVANCE (0-5):\n- 5: Exceptional \u2014 virtually never given\n- 4: Strong \u2014 FIRST identify exactly two genuinely non-obvious experimental insights. If you cannot name them, score 3\n- 3: GOOD \u2014 **DEFAULT for competent proposals.** Proposals address the research questions and would produce useful answers. This includes proposals using a particular analytical lens AS LONG AS that lens does not substantially redirect toward different questions than what was asked\n- 2: PARTIAL \u2014 Proposals relate to the topic but systematically answer DIFFERENT questions than what was asked. Examples: questions ask \"does X work?\" but proposals ask \"does X work with 10% data?\" or \"can X be explained through random matrix theory?\" \u2014 these are adjacent but different questions. Also score 2 when the analytical framework dominates over the research questions\n- 1: WEAK \u2014 Proposals driven by external agenda, minimal question engagement\n- 0: No engagement\n\nMETHOD_FIT (0-4):\n- 4: Expert domain-native methods showing specialist knowledge\n- 3: Methods that effectively produce evidence relevant to these questions\n- 2: Reasonable but partially mismatched to domain or paper type\n- 1: Significant mismatch\n- 0: Complete mismatch\n\nAPPROACH_DIVERSITY (0-4): Genuinely distinct experimental STRUCTURE TYPES across the 10 proposals. Types include: controlled comparison, ablation, formal proof, scaling analysis, probing experiment, benchmark construction, sensitivity study, case study, etc.\nCounting rules: different targets with same structure = ONE type; same meta-approach from different source fields = ONE type.\n- 4: 7+ types\n- 3: 5-6 types\n- 2: 3-4 types\n- 1: 1-2 types\n- 0: All identical\n\nDOMAIN_EXPERTISE (0-3): Knowledge from the paper's SPECIFIC subfield.\nNOT domain expertise: generic ML (transformers, Adam, BERT, CIFAR, ResNet); generic theory (PAC-Bayes, VC dimension, mutual information, Fisher information) unless paper concerns these; vocabulary from unrelated scientific fields (statistical mechanics, random matrix theory, optimal transport, algebraic topology applied to a paper not about these).\n- 3: Rich specialized references from paper's own subfield\n- 2: Several relevant domain-specific references\n- 1: A few beyond generic vocabulary\n- 0: All from questions, generic ML, or unrelated fields\n\nSCOPE_ALIGNMENT (0-3):\n- 3: Tightly scoped with natural extensions\n- 2: Mostly in scope\n- 1: Several out-of-scope conditions imposed\n- 0: Most outside scope\n\nINSIGHT_QUALITY (0-3): Genuine non-obvious experimental reasoning.\nCredit: maximally informative conditions, failure mode predictions from mechanics, clever controls.\nNo credit: impressive terminology without function, formalism without substance, confident predictions disconnected from the problem.\n- 3: Multiple non-obvious insights\n- 2: Some genuine insight\n- 1: Standard or surface sophistication\n- 0: Formulaic\n\nQUESTION_COVERAGE (0-2):\n- 2: Most/all questions addressed\n- 1: Some ignored\n- 0: At most one\n\nOVERLAY_PENALTY (-4 to 0):\n- 0: Natural variety\n- -1: 5-6 share methodology, or diverse core with uniform supplement\n- -2: 7-8 share core protocol\n- -3: 9+ share protocol\n- -4: Rigid identical framework on all 10\n\nVOCABULARY_PENALTY (-3 to 0):\n- 0: Multiple genuine domain references from paper's own subfield\n- -1: Some domain references alongside generic vocabulary\n- -2: Nearly all from questions, generic ML, or imported from unrelated fields\n- -3: Complete containment\n\nTEMPLATE_PENALTY (-2 to 0):\n- 0: Individually crafted with varied structure\n- -1: Some formulaic patterns\n- -2: Clear predetermined template with calibration tables, forced verdicts, or identical format\n\n## CALIBRATION\n\n1. QUESTION_RELEVANCE = 3 is GOOD and DEFAULT. Score 4 only after naming two non-obvious insights. Thoroughness and organization = 3, NOT 4.\n\n2. When proposals redirect questions through a particular lens (data efficiency, deployment, mechanism attribution, cross-disciplinary theory, scaling), assess whether the ORIGINAL questions are still answered. If yes: QR=3 with overlay penalty. If the lens substitutes adjacent questions: QR=2.\n\n3. Surface polish, confident predictions, authoritative tone are NOT quality signals.\n\n4. Sophisticated terminology and cross-disciplinary formalism should be judged purely on whether they produce better experiments for THIS problem. Impressiveness does not equal quality.\n\n5. THEORY papers: proofs, bounds, formal analysis appropriate.\n6. EXPERIMENTAL papers: theoretical diagnostics or external frameworks uniformly added suggest imposed methodology.\n7. Creative approaches genuinely addressing research questions deserve credit.\n\nExpected score ranges:\n- 0.55-0.68: Well-tailored with genuine engagement\n- 0.40-0.55: Framework-driven but questions genuinely addressed\n- 0.25-0.40: Predominantly framework-driven\n- 0.08-0.25: Rigid predetermined framework\n- 0.00-0.08: Irrelevant\n\n## OUTPUT FORMAT\n\nWrite detailed analysis first. Then output EXACTLY these 10 labeled scores as the FINAL lines of your response. Each line must be the label, a colon, and a single integer. These must be the LAST lines \u2014 do NOT write anything after the last score.\n\nQUESTION_RELEVANCE: <integer 0 to 5>\nMETHOD_FIT: <integer 0 to 4>\nAPPROACH_DIVERSITY: <integer 0 to 4>\nDOMAIN_EXPERTISE: <integer 0 to 3>\nSCOPE_ALIGNMENT: <integer 0 to 3>\nINSIGHT_QUALITY: <integer 0 to 3>\nQUESTION_COVERAGE: <integer 0 to 2>\nOVERLAY_PENALTY: <integer -4 to 0>\nVOCABULARY_PENALTY: <integer -3 to 0>\nTEMPLATE_PENALTY: <integer -2 to 0>",
+  "score_schema": {
+    "fields": [
+      {
+        "key": "question_relevance",
+        "regex": "(?i)question_relevance:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 5,
+        "weight": 1.5
+      },
+      {
+        "key": "method_fit",
+        "regex": "(?i)method_fit:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 4,
+        "weight": 1.0
+      },
+      {
+        "key": "approach_diversity",
+        "regex": "(?i)approach_diversity:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 4,
+        "weight": 0.9
+      },
+      {
+        "key": "domain_expertise",
+        "regex": "(?i)domain_expertise:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 3,
+        "weight": 0.6
+      },
+      {
+        "key": "scope_alignment",
+        "regex": "(?i)scope_alignment:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 3,
+        "weight": 0.65
+      },
+      {
+        "key": "insight_quality",
+        "regex": "(?i)insight_quality:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 3,
+        "weight": 0.55
+      },
+      {
+        "key": "question_coverage",
+        "regex": "(?i)question_coverage:\\s*(-?\\d+)",
+        "min": 0,
+        "max": 2,
+        "weight": 0.3
+      },
+      {
+        "key": "overlay_penalty",
+        "regex": "(?i)overlay_penalty:\\s*(-?\\d+)",
+        "min": -4,
+        "max": 0,
+        "weight": 0.8
+      },
+      {
+        "key": "vocabulary_penalty",
+        "regex": "(?i)vocabulary_penalty:\\s*(-?\\d+)",
+        "min": -3,
+        "max": 0,
+        "weight": 0.35
+      },
+      {
+        "key": "template_penalty",
+        "regex": "(?i)template_penalty:\\s*(-?\\d+)",
+        "min": -2,
+        "max": 0,
+        "weight": 0.3
+      }
+    ],
+    "aggregation": "weighted_sum_normalized"
+  }
+}

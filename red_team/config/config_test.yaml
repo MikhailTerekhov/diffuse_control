@@ -1,0 +1,13 @@
+# Tiny smoke test. Use with --dry-run for a no-API run.
+moasha:
+  rung_samples: [2, 4, 8]
+  eta: 2
+  target_highest_rung: 2
+  max_connections: 16
+  n_islands: 2
+  feature_bins: 2
+
+checkpoint_interval: 5
+
+optimizer:
+  max_connections: 2

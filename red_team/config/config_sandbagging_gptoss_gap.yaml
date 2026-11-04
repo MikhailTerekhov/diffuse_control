@@ -1,0 +1,47 @@
+# Resume the gpt-oss-120b sandbagging run with a seeded V1 max_weak prompt and
+# steer the optimizer to densify the strong-score band 0.2-0.5 — the existing
+# PF only sparsely samples that interior strong-score region.
+#
+# Usage:
+#   poetry run python evolve_quality_v2/run.py \
+#     --config config_sandbagging_gptoss_gap.yaml \
+#     --resume evolve_quality_v2/runs/20260416_013411 \
+#     --seed-prompts evolve_quality/runs/20260425_073240/checkpoints/checkpoint_210/best_program.txt
+#
+# After the first run, run.py caches the resulting trial under
+#   <run-dir>/seeded/<basename>.json
+# and re-uses it on subsequent resumes. To inject a pre-evaluated JSON
+# directly, pass that .json path instead of the .txt prompt.
+
+moasha:
+  rung_samples: [8, 32, 128]
+  eta: 4
+  target_highest_rung: 150  # bumped from 100 to give room for gap exploration
+  max_connections: 128
+  n_islands: 3
+  feature_bins: 4
+  mode: "sandbagging"
+  population_size: 80
+  archive_size: 16
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  promotion_window: 10
+
+optimizer:
+  show_rubric: true
+
+eval_models:
+  generator: "openrouter/openai/gpt-oss-120b"
+  generator_reasoning_effort: "high"
+  weak_scorer_type: "quality"
+  strong_scorer_type: "quality"
+
+# Boundary-aware optimization with manual band override: filter inspiration
+# examples to the strong-score band [0.2, 0.5] and inject a target-region
+# section into the optimizer system message asking it to densify that band.
+pf_gap:
+  enabled: true
+  s_low: 0.2
+  s_high: 0.5
+
+checkpoint_interval: 50

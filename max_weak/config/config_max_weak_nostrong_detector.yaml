@@ -1,0 +1,22 @@
+defaults:
+  - base
+  - _self_
+
+max_iterations: 1000
+
+scoring:
+  mode: "max_weak"
+
+database:
+  feature_dimensions: ["diversity", "complexity"]
+  feature_bins: 4
+
+eval_models:
+  max_connections: 32
+  max_connections_initial: 128
+  skip_strong_judge: true
+  max_stage2_evals: 100
+  weak_scorer_type: "detector"
+
+prompt:
+  system_message: "${optimizer_prompt:max_weak_nostrong_detector}"

@@ -1,0 +1,43 @@
+# Smallest useful real-API smoke test for the max-weak baseline.
+#
+# Same shape as config_max_weak_nostrong (single objective, strong judge skipped) but
+# scaled to a handful of papers, so the cascade stays meaningful on a 5-paper seeded
+# corpus (train=4): 2 papers to screen a candidate, 4 for a full evaluation.
+#
+# max_stage2_evals: 2 stops the run after two full evaluations, which is what bounds the
+# work. Since skip_strong_judge is on, the paper-carrying proxy judge is never called
+# during the search, so this is cheaper than the red team's config_tiny at the same scale.
+#
+#   uv run python max_weak/run.py --config-name config_tiny
+
+defaults:
+  - base
+  - _self_
+
+max_iterations: 6
+checkpoint_interval: 2
+
+scoring:
+  mode: "max_weak"
+
+database:
+  feature_dimensions: ["diversity", "complexity"]
+  feature_bins: 2
+  population_size: 10
+  archive_size: 4
+  num_islands: 2
+
+eval_models:
+  stage1_samples: 2
+  stage2_samples: 4
+  max_connections: 8
+  max_connections_initial: 8
+  skip_strong_judge: true
+  max_stage2_evals: 2
+
+evaluator:
+  parallel_evaluations: 2
+  cascade_thresholds: [0.0]
+
+prompt:
+  system_message: "${optimizer_prompt:max_weak_nostrong}"

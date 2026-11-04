@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Secrets
+.env
+.env.*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# The paper corpus is rebuilt locally and NEVER committed: the papers are CC-licensed
+# and cannot be redistributed. Default location, overridable with FUZZY_DATA_DIR.
+data/
+
+# Belt and braces: if someone points FUZZY_DATA_DIR at the code tree, the corpus
+# artifact directories must still be uncommittable. This is what went wrong in the
+# research repo, where ~2.7 GB of paper text ended up in git history.
+/metadata.json
+/text/
+/text_with_figures/
+/figures_description/
+/research_questions/
+/paper_classifications/
+/latex_sources/
+/figure_mappings/
+/paper_logs/
+/paper_pipeline/metadata.json
+/paper_pipeline/text/
+/paper_pipeline/text_with_figures/
+/paper_pipeline/figures_description/
+/paper_pipeline/research_questions/
+/paper_pipeline/paper_classifications/
+/paper_pipeline/latex_sources/
+/paper_pipeline/figure_mappings/
+/paper_pipeline/paper_logs/
+
+# Run outputs
+runs/
+logs/
+*.log
+# hydra's default run dir (max_weak/run.py)
+outputs/
+
+# Generated figures are never committed: regenerate them from the scripts. Repo-wide
+# rather than scoped to figures/, so an --out-base pointing elsewhere is still covered.
+*.png
+*.pdf
+*.svg
+*.eps
+
+# The score data figures are built from, also regenerated locally.
+# Scripts and READMEs under figures/ stay tracked.
+figures/*/data/
+figures/*/data.json
+
+# uv.lock IS tracked on purpose: it pins the environment for reproduction.
+
+# Working notes, not part of the release
+CLAUDE.md

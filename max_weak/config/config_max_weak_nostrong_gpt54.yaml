@@ -1,0 +1,23 @@
+defaults:
+  - base
+  - _self_
+
+max_iterations: 1000
+
+scoring:
+  mode: "max_weak"
+
+database:
+  feature_dimensions: ["diversity", "complexity"]
+  feature_bins: 4
+
+eval_models:
+  generator: "openai/gpt-5.4"
+  generator_reasoning_effort: "high"
+  max_connections: 32
+  max_connections_initial: 128
+  skip_strong_judge: true
+  max_stage2_evals: 100
+
+prompt:
+  system_message: "${optimizer_prompt:max_weak_nostrong}"

@@ -1,0 +1,22 @@
+# Smallest useful real-API smoke test.
+#
+# Rungs of 1 / 2 / 4 papers, so the top rung fits a 5-paper seeded corpus (train=4) and
+# the cascade still means something: each rung really does see more papers than the last.
+# With eta=2 a rung promotes once every 2 completions. A dry run of this config settled at
+# 16 trials (14 at rung 0, 5 at rung 1, 2 at rung 2) = 23 generator calls, ~46 judge calls
+# and ~16 optimizer calls. Enough to exercise every code path end to end.
+#
+#   uv run python red_team/run.py --config config_tiny.yaml
+#
+# For a no-API check of the same shape, add --dry-run.
+
+moasha:
+  rung_samples: [1, 2, 4]
+  eta: 2
+  target_highest_rung: 2
+  max_connections: 8
+  n_islands: 2
+  feature_bins: 2
+  mode: "sandbagging"
+
+checkpoint_interval: 2

@@ -1,0 +1,68 @@
+# OpenEvolve base config for the single-objective max-weak baseline.
+# Mirrors the red team's Table 2 settings where they overlap.
+max_iterations: 200
+checkpoint_interval: 10
+language: "text"
+diff_based_evolution: false
+max_code_length: 20000
+
+llm:
+  models:
+    - name: "anthropic/claude-opus-4-6"
+      weight: 1.0
+      # Route the mutation LLM through Inspect AI (max_weak/inspect_llm.py) rather than
+      # OpenEvolve's default OpenAI-compatible client.
+      provider: "inspect"
+  max_tokens: 128000
+  reasoning_effort: "xhigh"
+  timeout: 86400
+
+prompt:
+  num_top_programs: 3
+  num_diverse_programs: 2
+  include_artifacts: true
+  suggest_simplification_after_chars: 15000
+
+database:
+  population_size: 80
+  archive_size: 16
+  num_islands: 3
+  feature_bins: 4
+  elite_selection_ratio: 0.1
+  exploration_ratio: 0.3
+  exploitation_ratio: 0.6
+  migration_interval: 8
+  migration_rate: 0.1
+
+split:
+  train_ratio: 0.7
+  seed: 42
+
+scoring:
+  # max_weak is the paper's use of this pipeline. max_strong / strong_weak also work.
+  mode: "max_weak"
+
+cascade:
+  promotion_ratio: 0.3
+  auto_promote_first_n: 10
+  decay_half_life: 10
+
+eval_models:
+  max_connections: 64
+  max_connections_initial: 256
+  stage1_samples: 16
+  stage2_samples: 128
+  generator: "anthropic/claude-opus-4-6"
+  generator_reasoning_effort: "high"
+  weak_judge: "anthropic/claude-haiku-4-5-20251001"
+  weak_judge_reasoning_tokens: 16384
+  strong_judge: "anthropic/claude-sonnet-4-6"
+  strong_judge_reasoning_effort: "high"
+  strong_judge_has_paper: true
+  noanswer_retry_threshold: 0.1
+
+evaluator:
+  timeout: 86400
+  parallel_evaluations: 4
+  cascade_evaluation: true
+  cascade_thresholds: [0.0]
